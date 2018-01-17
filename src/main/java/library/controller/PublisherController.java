@@ -1,18 +1,12 @@
 package library.controller;
 
-import library.dto.AddressDto;
 import library.dto.PublisherDto;
-import library.entity.Address;
 import library.entity.Publisher;
 import library.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/publishers")
@@ -32,6 +26,18 @@ public class PublisherController {
             return "Error creating the publisher: " + e.toString();
         }
         return "Publisher succesfully created! (id = " + publisher.getId() + ")";
+    }
+
+    @RequestMapping(value = "/{publisherId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String delete(@PathVariable String publisherId) {
+        Publisher publisher;
+        try {
+            publisherService.delete(publisherId);
+        } catch (Exception e) {
+            return "Error deleting the publisher: " + e.toString();
+        }
+        return "Publisher succesfully deleted! (id = " + publisherId + ")";
     }
 
 }

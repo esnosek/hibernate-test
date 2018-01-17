@@ -13,7 +13,6 @@ public class Address implements Serializable{
     private String street;
     private String city;
     private String email;
-
     public String getStreet() {
         return street;
     }

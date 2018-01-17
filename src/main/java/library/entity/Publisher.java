@@ -2,6 +2,7 @@ package library.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Publisher implements Serializable {
@@ -12,12 +13,18 @@ public class Publisher implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
 
     @Embedded
     private Address address;
+
+    @OneToOne(mappedBy = "publisher", cascade = CascadeType.ALL)
+    private PublisherMetadata publisherMetadata;
+
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+    private List<Book> books;
 
     public int getId() {
         return id;
@@ -41,5 +48,19 @@ public class Publisher implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public PublisherMetadata getPublisherMetadata() {
+        return publisherMetadata;
+    }
+
+    public void addPublisherMetadata(PublisherMetadata publisherMetadata) {
+        this.publisherMetadata = publisherMetadata;
+        publisherMetadata.setPublisher(this);
+    }
+
+    public void removePublisherMetadata() {
+        if (this.publisherMetadata != null)
+            publisherMetadata.setPublisher(null);
     }
 }

@@ -30,4 +30,40 @@ public class PublisherDao {
             session.close();
         }
     }
+
+    public Publisher findOne(int id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Publisher publisher;
+        try {
+            transaction = session.beginTransaction();
+            publisher = (Publisher) session.get(Publisher.class, id);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return publisher;
+    }
+
+    public void delete(int id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Publisher publisher;
+        try {
+            transaction = session.beginTransaction();
+            publisher = (Publisher) session.get(Publisher.class, id);
+            session.delete(publisher);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 }
