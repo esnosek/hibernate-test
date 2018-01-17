@@ -2,6 +2,7 @@ package library.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,7 +10,8 @@ public class Publisher implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Publisher(){}
+    public Publisher() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,5 +64,18 @@ public class Publisher implements Serializable {
     public void removePublisherMetadata() {
         if (this.publisherMetadata != null)
             publisherMetadata.setPublisher(null);
+    }
+
+    public void addBook(Book book) {
+        if (this.books == null) {
+            this.books = new ArrayList<>();
+        }
+        this.books.add(book);
+        book.setPublisher(this);
+    }
+
+    public void removeBook(Book book) {
+        this.books.remove(book);
+        book.setPublisher(null);
     }
 }

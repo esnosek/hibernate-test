@@ -1,6 +1,7 @@
 package library.dao;
 
 import library.entity.Book;
+import library.entity.Publisher;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,12 +14,17 @@ public class BookDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void save(Book book) {
+    @Autowired
+    private PublisherDao publisherDao;
+
+    public void save(Book book, String publisherId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
+            Publisher publisher = publisherDao.findOne(Integer.valueOf(publisherId));
             transaction = session.beginTransaction();
-            session.save(book);
+            publisher.addBook(book);
+            session.saveOrUpdate(publisher);
             transaction.commit();
         }
         catch(RuntimeException e) {

@@ -1,11 +1,8 @@
 package library.controller;
 
-import library.dto.AuthorDto;
 import library.dto.BookDto;
-import library.entity.Author;
 import library.entity.Book;
-import library.service.AuthorService;
-import library.service.BookService;
+import library.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -19,14 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class BookController {
 
     @Autowired
-    private BookService bookService;
+    private PublisherService publisherService;
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String create(@RequestBody BookDto bookDto){
         Book book;
         try {
-            book = bookService.save(bookDto);
+            book = publisherService.addBook(bookDto);
         }
         catch (Exception e) {
             return "Error creating the book: " + e.toString();

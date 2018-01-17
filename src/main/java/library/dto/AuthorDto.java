@@ -1,6 +1,8 @@
 package library.dto;
 
-public class AuthorDto {
+import java.io.Serializable;
+
+public class AuthorDto implements Serializable {
 
     private String firstName;
     private String lastName;

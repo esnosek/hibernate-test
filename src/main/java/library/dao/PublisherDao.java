@@ -1,5 +1,6 @@
 package library.dao;
 
+import library.entity.Book;
 import library.entity.Publisher;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -57,6 +58,25 @@ public class PublisherDao {
             transaction = session.beginTransaction();
             publisher = (Publisher) session.get(Publisher.class, id);
             session.delete(publisher);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void addBook(int id, Book book) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Publisher publisher;
+        try {
+            transaction = session.beginTransaction();
+            publisher = (Publisher) session.get(Publisher.class, id);
+            publisher.addBook(book);
+            session.persist(publisher);
             transaction.commit();
         } catch (RuntimeException e) {
             if (transaction != null)

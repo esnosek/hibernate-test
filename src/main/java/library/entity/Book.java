@@ -1,9 +1,6 @@
 package library.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -19,8 +16,7 @@ public class Book implements Serializable {
 
     private String title;
 
-    private String category;
-
+    @ManyToOne
     private Publisher publisher;
 
     public int getId() {
@@ -39,12 +35,12 @@ public class Book implements Serializable {
         this.title = title;
     }
 
-    public String getCategory() {
-        return category;
+    public Publisher getPublisher() {
+        return publisher;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 }
 

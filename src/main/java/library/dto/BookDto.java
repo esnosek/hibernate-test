@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class BookDto implements Serializable{
 
     private String title;
-    private String category;
+    private String publisherId;
 
-    public BookDto(String title, String category) {
+    public BookDto(String title, String publisherId) {
         this.title = title;
-        this.category = category;
+        this.publisherId = publisherId;
     }
 
     public BookDto() {
@@ -23,11 +23,11 @@ public class BookDto implements Serializable{
         this.title = title;
     }
 
-    public String getCategory() {
-        return category;
+    public String getPublisherId() {
+        return publisherId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setPublisherId(String publisherId) {
+        this.publisherId = publisherId;
     }
 }
