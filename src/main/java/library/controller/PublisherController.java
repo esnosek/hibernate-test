@@ -1,8 +1,10 @@
 package library.controller;
 
-import library.dto.PublisherDto;
+import library.dto.read.PublisherReadDto;
+import library.dto.write.PublisherDto;
 import library.entity.Publisher;
 import library.service.PublisherService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,15 +16,23 @@ public class PublisherController {
 
     @Autowired
     private PublisherService publisherService;
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @RequestMapping(value = "/{publisherId}", method = RequestMethod.GET)
+    @ResponseBody
+    public PublisherReadDto get(@PathVariable String publisherId) {
+        Publisher publisher = publisherService.findOne(Integer.valueOf(publisherId));
+        return modelMapper.map(publisher, PublisherReadDto.class);
+    }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String create(@RequestBody PublisherDto publisherDto) {
         Publisher publisher;
         try {
-            publisher =  publisherService.save(publisherDto);
-        }
-        catch (Exception e) {
+            publisher = publisherService.save(modelMapper.map(publisherDto, Publisher.class));
+        } catch (Exception e) {
             return "Error creating the publisher: " + e.toString();
         }
         return "Publisher succesfully created! (id = " + publisher.getId() + ")";

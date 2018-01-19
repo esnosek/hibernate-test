@@ -1,6 +1,6 @@
 package library.controller;
 
-import library.dto.BookDto;
+import library.dto.write.BookDto;
 import library.entity.Book;
 import library.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
