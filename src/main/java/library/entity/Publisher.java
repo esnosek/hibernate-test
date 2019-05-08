@@ -1,21 +1,27 @@
 package library.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 public class Publisher implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Publisher() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     private String name;
 
@@ -23,38 +29,16 @@ public class Publisher implements Serializable {
     private Address address;
 
     @OneToOne(mappedBy = "publisher", cascade = CascadeType.ALL)
+    @Setter(AccessLevel.NONE)
     private PublisherMetadata publisherMetadata;
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
-    private List<Book> books;
+    @Setter(AccessLevel.NONE)
+    private List<Book> books = new ArrayList<>();
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public PublisherMetadata getPublisherMetadata() {
-        return publisherMetadata;
-    }
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+    @Setter(AccessLevel.NONE)
+    private List<Magazine> magazines = new ArrayList<>();
 
     public void addPublisherMetadata(PublisherMetadata publisherMetadata) {
         this.publisherMetadata = publisherMetadata;
@@ -62,14 +46,10 @@ public class Publisher implements Serializable {
     }
 
     public void removePublisherMetadata() {
-        if (this.publisherMetadata != null)
-            publisherMetadata.setPublisher(null);
+        Optional.ofNullable(publisherMetadata).ifPresent(item -> item.setPublisher(null));
     }
 
     public void addBook(Book book) {
-        if (this.books == null) {
-            this.books = new ArrayList<>();
-        }
         this.books.add(book);
         book.setPublisher(this);
     }
@@ -77,5 +57,15 @@ public class Publisher implements Serializable {
     public void removeBook(Book book) {
         this.books.remove(book);
         book.setPublisher(null);
+    }
+
+    public void addMagazine(Magazine magazine) {
+        this.magazines.add(magazine);
+        magazine.setPublisher(this);
+    }
+
+    public void removeMagazine(Magazine magazine) {
+        this.magazines.remove(magazine);
+        magazine.setPublisher(null);
     }
 }

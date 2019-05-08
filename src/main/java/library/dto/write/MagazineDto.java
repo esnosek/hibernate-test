@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,6 +15,5 @@ public class MagazineDto implements Serializable {
 
     private String title;
     private Integer publisherId;
-    private List<Integer> ids;
-
+    private Set<Integer> authorsIds;
 }

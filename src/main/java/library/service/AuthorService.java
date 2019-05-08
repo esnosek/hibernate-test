@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -25,7 +26,7 @@ public class AuthorService {
         return author;
     }
 
-    public List<Author> findByIds(List<Integer> authorsIds) {
+    public List<Author> findByIds(Set<Integer> authorsIds) {
         return authorDao.findByIds(authorsIds);
     }
 

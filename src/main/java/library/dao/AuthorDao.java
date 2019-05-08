@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthorDao {
@@ -26,7 +27,7 @@ public class AuthorDao {
         session.save(author);
     }
 
-    public List<Author> findByIds(List<Integer> authorsIds) {
+    public List<Author> findByIds(Set<Integer> authorsIds) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Author a where a.id in (:ids)").setParameterList("ids", authorsIds);
         return query.list();

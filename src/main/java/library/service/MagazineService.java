@@ -33,7 +33,7 @@ public class MagazineService {
         Magazine magazine = modelMapper.map(magazineDto, Magazine.class);
         Publisher publisher = publisherService.findOne(Integer.valueOf(magazineDto.getPublisherId()));
         publisher.addMagazine(magazine);
-        List<Author> authors = authorService.findByIds(magazineDto.getIds());
+        List<Author> authors = authorService.findByIds(magazineDto.getAuthorsIds());
         authors.forEach(magazine::addAuthor);
         magazineDao.save(magazine);
         return magazine;
@@ -54,7 +54,7 @@ public class MagazineService {
                 )
         );
 
-        Optional.ofNullable(magazineDto.getIds()).ifPresent(authorIds -> {
+        Optional.ofNullable(magazineDto.getAuthorsIds()).ifPresent(authorIds -> {
             magazine.removeAllAuthors();
             List<Author> authors = authorService.findByIds(authorIds);
             authors.forEach(magazine::addAuthor);
